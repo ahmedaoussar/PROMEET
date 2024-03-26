@@ -2,14 +2,11 @@ from http.client import HTTPException
 from pydantic import BaseModel, EmailStr
 from fastapi import FastAPI
 from database import connect, initialize_db, create_user
+from src.model.User import User
 
 app = FastAPI()
 conn = connect()
 cursor = conn.cursor()
-
-class User(BaseModel):
-    name: str
-    age: int
 
 @app.on_event("startup")
 async def startup_event():
