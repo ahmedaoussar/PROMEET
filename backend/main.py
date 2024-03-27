@@ -16,6 +16,6 @@ async def startup_event():
 async def add_user(user: User):
     user_id = create_user(user.name, user.age)
     if user_id:
-        return {"id": user_id, "name": user.name, "age": user.age}
+        return {"success": true}
     else:
-        raise HTTPException(status_code=400, detail="User not created")
+        return {"success": false}
