@@ -23,25 +23,25 @@ def initialize_db():
     conn = connect()
     cursor = conn.cursor()
     query = """
-    CREATE TABLE IF NOT EXISTS users (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        name VARCHAR(255),
-        age INT
-    )
+#     CREATE TABLE IF NOT EXISTS users (
+#         id INT AUTO_INCREMENT PRIMARY KEY,
+#         name VARCHAR(255),
+#         age INT
+#     )
     """
     cursor.execute(query)
     conn.close()
 
 # Inside database.py
-def create_user(name, age):
-    conn = connect()
-    cursor = conn.cursor()
-    query = "INSERT INTO users (name, age) VALUES (%s, %s)"
-    values = (name, age)
-    cursor.execute(query, values)
-    conn.commit()
-    conn.close()
-    return cursor.lastrowid
+# def create_user(name, age):
+#     conn = connect()
+#     cursor = conn.cursor()
+#     query = "INSERT INTO users (name, age) VALUES (%s, %s)"
+#     values = (name, age)
+#     cursor.execute(query, values)
+#     conn.commit()
+#     conn.close()
+#     return cursor.lastrowid
 
 # ... [other CRUD functions]
 
