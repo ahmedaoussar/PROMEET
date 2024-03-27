@@ -1,9 +1,10 @@
-import {Option, Select} from "@material-tailwind/react";
+import {Accueil} from "./Pages/Accueil.jsx";
 
 function App() {
 
     return (
         <>
+            <Accueil></Accueil>
         </>
     )
 }
