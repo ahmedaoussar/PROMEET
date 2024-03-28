@@ -1,7 +1,7 @@
 from http.client import HTTPException
 from pydantic import BaseModel, EmailStr
 from fastapi import FastAPI
-from database import connect, initialize_db, create_user
+from database import connect, initialize_db
 from src.model.User import User
 
 app = FastAPI()
