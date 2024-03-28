@@ -1,7 +1,7 @@
 from http.client import HTTPException
 from pydantic import BaseModel, EmailStr
 from fastapi import FastAPI
-from database import connect, initialize_db, create_user
+from database import connect, initialize_db
 from src.model.User import User
 
 app = FastAPI()
@@ -14,7 +14,7 @@ async def startup_event():
 
 @app.post("/users/")
 async def add_user(user: User):
-    user_id = create_user(user.name, user.age)
+    user_id = false # create_user(user.name, user.age)
     if user_id:
         return {"success": true}
     else:
