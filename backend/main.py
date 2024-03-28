@@ -14,7 +14,7 @@ async def startup_event():
 
 @app.post("/users/")
 async def add_user(user: User):
-    user_id = False
+    user_id = false # create_user(user.name, user.age)
     if user_id:
         return {"success": true}
     else:
