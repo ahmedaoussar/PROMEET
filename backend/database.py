@@ -1,4 +1,3 @@
-
 import mysql.connector
 from dotenv import load_dotenv
 import os
@@ -220,7 +219,7 @@ def initialize_value_competence():
         if query.with_rows:
             query.fetchall()
     conn.close()
-    
+
 def initialize_value_entreprise():
     conn = connect()
     cursor = conn.cursor()
@@ -261,17 +260,45 @@ def initialize_db():
     initialize_value_competence()
     initialize_value_entreprise()
 
-# Inside database.py
-# def create_user(name, age):
-#     conn = connect()
-#     cursor = conn.cursor()
-#     query = "INSERT INTO users (name, age) VALUES (%s, %s)"
-#     values = (name, age)
-#     cursor.execute(query, values)
-#     conn.commit()
-#     conn.close()
-#     return cursor.lastrowid
-
-# ... [other CRUD functions]
+def recherche_dans_la_base(q: str):
+    conn = connect()
+    cursor = conn.cursor(dictionary=True)
+    query = """
+    SELECT
+    	personne.id,
+        personne.nom AS nom,
+        personne.prenom AS prenom,
+        profession.nom AS profession,
+        sous_domaine.nom AS sous_domaine,
+        domaine.nom AS domaine,
+        GROUP_CONCAT(competence.nom) AS competences,
+        entreprise.nom AS entreprise
+    FROM
+        personne
+    LEFT JOIN
+        profession ON personne.profession_id = profession.id
+    LEFT JOIN
+        sous_domaine ON personne.sous_domaine = sous_domaine.id
+    LEFT JOIN
+        domaine ON sous_domaine.domaine_id = domaine.id
+    LEFT JOIN
+        competence ON personne.sous_domaine = competence.domaine_id
+    LEFT JOIN
+        entreprise ON personne.entreprise = entreprise.id
+    WHERE
+        personne.nom LIKE %s OR
+        personne.prenom LIKE %s OR
+        profession.nom LIKE %s OR
+        sous_domaine.nom LIKE %s OR
+        domaine.nom LIKE %s OR
+        competence.nom LIKE %s OR
+        entreprise.nom LIKE %s
+    GROUP BY personne.id
+    """
+    search_string = '%' + q + '%'
+    cursor.execute(query, (search_string, search_string, search_string, search_string, search_string, search_string, search_string))
+    results = cursor.fetchall()
+    conn.close()
+    return results
 
 
