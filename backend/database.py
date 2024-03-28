@@ -27,7 +27,7 @@ def initialize_db_profession():
            nom VARCHAR(255)
        );
     """
-    cursor.execute(query)
+    cursor.execute(query,multi=True)
     conn.close()
 
 def initialize_db_domaine():
@@ -135,7 +135,7 @@ def initialize_value_domaine():
        SELECT nom FROM domaine WHERE nom = 'Marketing'
     ) LIMIT 1;
     """
-    cursor.execute(query)
+    cursor.execute(query,multi=True)
     conn.close()
 
 def initialize_value_sous_domaine():
@@ -172,7 +172,7 @@ def initialize_value_sous_domaine():
         SELECT nom FROM sous_domaine WHERE nom = 'Développement Web' AND domaine_id = 4
     ) LIMIT 1;
     """
-    cursor.execute(query)
+    cursor.execute(query,multi=True)
     conn.close()
 
 def initialize_value_competence():
@@ -210,7 +210,7 @@ def initialize_value_competence():
        ) LIMIT 1;
 
     """
-    cursor.execute(query)
+    cursor.execute(query,multi=True)
     conn.close()
 
 def initialize_db():
