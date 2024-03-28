@@ -135,7 +135,10 @@ def initialize_value_domaine():
        SELECT nom FROM domaine WHERE nom = 'Marketing'
     ) LIMIT 1;
     """
-    cursor.execute(query,multi=True)
+    generator = cursor.execute(query,multi=True)
+    for query in generator:
+        if query.with_rows:
+            query.fetchall()
     conn.close()
 
 def initialize_value_sous_domaine():
@@ -151,28 +154,30 @@ def initialize_value_sous_domaine():
     INSERT INTO sous_domaine (nom, domaine_id)
     SELECT * FROM (SELECT 'Sécurité des réseaux', 1) AS tmp
     WHERE NOT EXISTS (
-        SELECT nom FROM sous_domaine WHERE nom = 'Développement Web' AND domaine_id = 1
+        SELECT nom FROM sous_domaine WHERE nom = 'Sécurité des réseaux' AND domaine_id = 1
     ) LIMIT 1;
 
     INSERT INTO sous_domaine (nom, domaine_id)
     SELECT * FROM (SELECT 'Analyse financière', 2) AS tmp
     WHERE NOT EXISTS (
-        SELECT nom FROM sous_domaine WHERE nom = 'Développement Web' AND domaine_id = 2
+        SELECT nom FROM sous_domaine WHERE nom = 'Analyse financière' AND domaine_id = 2
     ) LIMIT 1;
 
     INSERT INTO sous_domaine (nom, domaine_id)
     SELECT * FROM (SELECT 'Génie mécanique', 3) AS tmp
     WHERE NOT EXISTS (
-        SELECT nom FROM sous_domaine WHERE nom = 'Développement Web' AND domaine_id = 3
+        SELECT nom FROM sous_domaine WHERE nom = 'Génie mécanique' AND domaine_id = 3
     ) LIMIT 1;
-    INSERT INTO so
-    us_domaine (nom, domaine_id)
+    INSERT INTO sous_domaine (nom, domaine_id)
     SELECT * FROM (SELECT 'Marketing digital', 4) AS tmp
     WHERE NOT EXISTS (
-        SELECT nom FROM sous_domaine WHERE nom = 'Développement Web' AND domaine_id = 4
+        SELECT nom FROM sous_domaine WHERE nom = 'Marketing digital' AND domaine_id = 4
     ) LIMIT 1;
     """
-    cursor.execute(query,multi=True)
+    generator = cursor.execute(query,multi=True)
+    for query in generator:
+        if query.with_rows:
+            query.fetchall()
     conn.close()
 
 def initialize_value_competence():
@@ -188,29 +193,60 @@ def initialize_value_competence():
        INSERT INTO competence (nom, domaine_id)
        SELECT * FROM (SELECT 'PHP', 1) AS tmp
        WHERE NOT EXISTS (
-           SELECT nom FROM competence WHERE nom = 'HTML' AND domaine_id = 1
+           SELECT nom FROM competence WHERE nom = 'PHP' AND domaine_id = 1
        ) LIMIT 1;
 
        INSERT INTO competence (nom, domaine_id)
        SELECT * FROM (SELECT 'Analyse financière avancée', 2) AS tmp
        WHERE NOT EXISTS (
-           SELECT nom FROM competence WHERE nom = 'HTML' AND domaine_id = 2
+           SELECT nom FROM competence WHERE nom = 'Analyse financière avancée' AND domaine_id = 2
        ) LIMIT 1;
 
        INSERT INTO competence (nom, domaine_id)
        SELECT * FROM (SELECT 'Conception de pièces mécaniques', 3) AS tmp
        WHERE NOT EXISTS (
-           SELECT nom FROM competence WHERE nom = 'HTML' AND domaine_id = 3
+           SELECT nom FROM competence WHERE nom = 'Conception de pièces mécaniques' AND domaine_id = 3
        ) LIMIT 1;
 
        INSERT INTO competence (nom, domaine_id)
        SELECT * FROM (SELECT 'Stratégie de contenu', 4) AS tmp
        WHERE NOT EXISTS (
-           SELECT nom FROM competence WHERE nom = 'HTML' AND domaine_id = 4
+           SELECT nom FROM competence WHERE nom = 'Stratégie de contenu' AND domaine_id = 4
        ) LIMIT 1;
 
     """
-    cursor.execute(query,multi=True)
+    generator = cursor.execute(query,multi=True)
+    for query in generator:
+        if query.with_rows:
+            query.fetchall()
+    conn.close()
+    
+def initialize_value_entreprise():
+    conn = connect()
+    cursor = conn.cursor()
+    query = """
+       INSERT INTO entreprise (nom, ville, code_postal)
+       SELECT * FROM (SELECT 'Orange', 'Bordeaux', '33000') AS tmp
+       WHERE NOT EXISTS (
+           SELECT nom FROM entreprise WHERE nom = 'Orange'
+       ) LIMIT 1;
+
+        INSERT INTO entreprise (nom, ville, code_postal)
+       SELECT * FROM (SELECT 'Capgemini', 'Merignac', '33281') AS tmp
+       WHERE NOT EXISTS (
+           SELECT nom FROM entreprise WHERE nom = 'Capgemini'
+       ) LIMIT 1;
+
+        INSERT INTO entreprise (nom, ville, code_postal)
+       SELECT * FROM (SELECT 'Safran', 'Le Haillan', '33200') AS tmp
+       WHERE NOT EXISTS (
+           SELECT nom FROM entreprise WHERE nom = 'Safran'
+       ) LIMIT 1;
+    """
+    generator = cursor.execute(query,multi=True)
+    for query in generator:
+        if query.with_rows:
+            query.fetchall()
     conn.close()
 
 def initialize_db():
@@ -223,6 +259,7 @@ def initialize_db():
     initialize_value_domaine()
     initialize_value_sous_domaine()
     initialize_value_competence()
+    initialize_value_entreprise()
 
 # Inside database.py
 # def create_user(name, age):
