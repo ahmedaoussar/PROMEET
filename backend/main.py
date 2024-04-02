@@ -16,6 +16,6 @@ async def startup_event():
 async def add_user(user: User):
     user_id = create_user(user.name, user.age)
     if user_id:
-        return {"success": true}
+        return {"success": True}
     else:
-        return {"success": false}
+        return {"success": False}
