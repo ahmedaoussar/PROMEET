@@ -3,7 +3,7 @@ import {
     Card,
     Input,
     Button,
-    Typography,
+    Typography, Textarea,
 } from "@material-tailwind/react";
 
 export function Formulaire() {
@@ -50,16 +50,11 @@ export function Formulaire() {
                                 />
                             </div>
                         </div>
-                        <div className="mb-4" style={{
-                            backgroundColor: "#F8F7FF",
-                            border: "1px solid #B0BEC5",
-                            borderRadius: "0.375rem"
-                        }}>
+                        <div className="mb-4">
                             <Typography variant="h6" className="text-bleuFonce mb-3">Votre message</Typography>
-                            <textarea
-                                rows={4}
-                                className="px-3 py-2 rounded-md bg-F8F7FF focus:outline-none focus:ring-2 focus:ring-lightBlue-500 w-full !border-t-blueGray-300 focus:!border-t-blueGray-500"
-                                style={{backgroundColor: "#F8F7FF", border: "none"}}
+                            <Textarea label="Votre message"
+                                      className="px-3 py-2 border border-blue-gray-300 bg-nuanceBlanc rounded w-full"
+                                      rows={4}
                             />
                         </div>
                         <Button
