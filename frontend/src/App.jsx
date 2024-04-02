@@ -1,11 +1,13 @@
 
+import { HeadAfterBNav } from "./Composants/HeadAfterBNav"
 import { BarreNavigation } from "./Composants/BarreNavigation"
 
 function App() {
 
     return (
         <>
-           <BarreNavigation></BarreNavigation> 
+        <BarreNavigation></BarreNavigation>
+           <HeadAfterBNav></HeadAfterBNav>
             
         </>
     )
