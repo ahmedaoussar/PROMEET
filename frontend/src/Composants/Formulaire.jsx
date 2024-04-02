@@ -58,9 +58,6 @@ export function Formulaire() {
                         </div>
                         <Button
                             size="sm"
-                            color="blueFonce"
-                            buttonType="filled"
-                            ripple="light"
                             className="float-right bg-bleuFonce hidden lg:inline-block"
                         >
                             Envoyer
