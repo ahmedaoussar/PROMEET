@@ -1,15 +1,13 @@
-
-import { BarreNavigation } from "./Composants/BarreNavigation"
-import { Formulaire } from "./Composants/Formulaire";
+import {BarreNavigation} from "./Composants/BarreNavigation"
+import {Accueil} from "./Pages/Accueil.jsx";
 
 
 function App() {
 
     return (
         <>
-           <BarreNavigation></BarreNavigation>
-
-           <Formulaire></Formulaire>
+            <BarreNavigation></BarreNavigation>
+            <Accueil></Accueil>
         </>
     )
 }
