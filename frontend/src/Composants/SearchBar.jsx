@@ -25,10 +25,10 @@ const SearchBar = () => {
                 </Button>
             </div>
             <div className="h-1 bg-blue-900 w-full mt-2 rounded"></div>
-            <div className="flex justify-center mt-2 flex-wrap gap-3">
+            <div className="flex justify-center mt-2 flex-wrap 2xl:flex-nowrap gap-3">
                 {[...Array(6)].map((_, index) => (
                     <button key={index}
-                            className="text-white font-bold bg-blue-900 rounded-lg px-4 py-2 mx-1 w-1/3">Analyste</button>
+                            className="text-white font-bold bg-bleuFonce rounded-lg px-4 py-2 mx-1 w-44 2xl:w-full break-words">Analyste</button>
                 ))}
             </div>
         </form>

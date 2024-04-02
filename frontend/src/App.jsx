@@ -5,7 +5,7 @@ import {Accueil} from "./Pages/Accueil.jsx";
 function App() {
 
     return (
-        <div className={'max-w-screen-2xl mx-auto'}>
+        <div className={'w-10/12 md:container mx-auto'}>
             <BarreNavigation></BarreNavigation>
             <Accueil></Accueil>
         </div>
