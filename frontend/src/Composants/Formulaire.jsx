@@ -1,4 +1,3 @@
-import React from 'react';
 import {
     Card,
     Input,
@@ -8,7 +7,7 @@ import {
 
 export function Formulaire() {
     return (
-        <div className="container mx-auto w-full mt-10">
+        <div className="mx-auto w-full mt-10">
             <Card shadow={false}>
                 <Typography variant="h4" className="text-center mb-8 text-bleuFonce">
                     Un problème ? Une idée ?
@@ -16,7 +15,7 @@ export function Formulaire() {
                 <div
                     className="border border-bleuFonce p-4 rounded-xl bg-nuanceBlanc">
                     <form className="mt-8">
-                        <div className="grid grid-cols-2 gap-4 mb-4">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                             <div>
                                 <Typography variant="h6" className="text-bleuFonce mb-3">Nom</Typography>
                                 <Input
