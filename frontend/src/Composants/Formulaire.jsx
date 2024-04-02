@@ -8,8 +8,8 @@ import {
 
 export function Formulaire() {
     return (
-        <div className="container mx-auto px-4 lg:px-8">
-            <Card color="#002C77" shadow={false} className="p-8">
+        <div className="container mx-auto w-full mt-10">
+            <Card shadow={false}>
                 <Typography variant="h4" className="text-center mb-8 text-bleuFonce">
                     Un problème ? Une idée ?
                 </Typography>
