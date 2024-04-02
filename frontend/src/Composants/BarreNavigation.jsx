@@ -2,7 +2,7 @@ import React from "react";
 import {
     Navbar,
     Typography,
-    Button, MobileNav, IconButton,
+    Button, IconButton, Collapse,
 } from "@material-tailwind/react";
 
 export function BarreNavigation() {
@@ -81,7 +81,7 @@ export function BarreNavigation() {
                     )}
                 </IconButton>
             </div>
-            <MobileNav open={openNav}>
+            <Collapse open={openNav}>
                 <div className="container mx-auto mt-5">
                     <div className="flex items-center gap-x-5">
                         <Button fullWidth variant="filled" size="sm" className="bg-bleuFonce text-white">
@@ -93,7 +93,7 @@ export function BarreNavigation() {
                         </Button>
                     </div>
                 </div>
-            </MobileNav>
+            </Collapse>
         </Navbar>
     );
 }
