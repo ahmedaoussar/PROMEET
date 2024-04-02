@@ -1,15 +1,12 @@
-
-import { HeadAfterBNav } from "./Composants/HeadAfterBNav"
 import { BarreNavigation } from "./Composants/BarreNavigation"
 
 function App() {
 
     return (
-        <>
-        <BarreNavigation></BarreNavigation>
-           <HeadAfterBNav></HeadAfterBNav>
-            
-        </>
+        <div className={'w-10/12 md:container mx-auto'}>
+            <BarreNavigation></BarreNavigation>
+            <Accueil></Accueil>
+        </div>
     )
 }
 
