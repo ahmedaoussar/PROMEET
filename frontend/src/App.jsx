@@ -1,15 +1,10 @@
-
-import { BarreNavigation } from "./Composants/BarreNavigation"
-import { Formulaire } from "./Composants/Formulaire";
-
+import { Accueil } from "./Pages/Accueil"
 
 function App() {
 
     return (
         <>
-           <BarreNavigation></BarreNavigation>
-
-           <Formulaire></Formulaire>
+           <Accueil></Accueil>          
         </>
     )
 }
