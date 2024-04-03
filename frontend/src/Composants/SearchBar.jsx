@@ -1,18 +1,32 @@
 import {Button, Input} from "@material-tailwind/react";
+import axios from "axios";
 
-const SearchBar = () => {
+const SearchBar = ({search}) => {
+
+    function handleSearch(event) {
+        event.preventDefault()
+        axios.get('http://localhost:8000/recherche?q=' + event.target.query.value).then((response) => {
+            console.log(response.data.find)
+        })
+    }
+
     return (
-        <form className="w-full mx-auto rounded-xl bg-nuanceBlanc border border-bleuFonce py-4 px-2">
+        <form onSubmit={search ? handleSearch : () => {
+            return;
+        }}
+              className="w-full mx-auto rounded-xl bg-nuanceBlanc border border-bleuFonce py-4 px-2">
             <label htmlFor="default-search"
                    className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
             <div className="relative flex w-full">
                 <Input
-                    type="email"
+                    name={"query"}
+                    type="search"
                     label="Trouver un PRO"
                     className="pr-20"
                     required
                 />
                 <Button
+                    type={"submit"}
                     size="sm"
                     className="!absolute right-1 top-1 rounded text-white bg-bleuFonce flex items-center gap-3"
                 >

@@ -6,7 +6,7 @@ export const Accueil = () => {
     return (
         <div>
             <HeadAfterBNav></HeadAfterBNav>
-            <SearchBar/>
+            <SearchBar search={false}/>
             <Formulaire/>
         </div>
     )
