@@ -1,10 +1,12 @@
-import {Accueil} from "./Pages/Accueil.jsx";
+
+import { BarreNavigation } from "./Composants/BarreNavigation"
 
 function App() {
 
     return (
         <>
-            <Accueil></Accueil>
+           <BarreNavigation></BarreNavigation> 
+            
         </>
     )
 }
