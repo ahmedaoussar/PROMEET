@@ -1,4 +1,4 @@
-
+import { Accueil } from "./Pages/Accueil"
 import { BarreNavigation } from "./Composants/BarreNavigation"
 import { Footer } from "./Composants/Footer";
 
