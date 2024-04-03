@@ -1,5 +1,7 @@
-import {BarreNavigation} from "./Composants/BarreNavigation"
-import {Accueil} from "./Pages/Accueil.jsx";
+
+import { BarreNavigation } from "./Composants/BarreNavigation"
+import { Footer } from "./Composants/Footer";
+
 
 function App() {
 
