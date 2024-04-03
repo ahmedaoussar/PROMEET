@@ -1,18 +1,15 @@
 
 import { BarreNavigation } from "./Composants/BarreNavigation"
 import { Footer } from "./Composants/Footer";
-import { Formulaire } from "./Composants/Formulaire";
 
 
 function App() {
 
     return (
-        <>
-           <BarreNavigation></BarreNavigation>
-
-           <Formulaire></Formulaire>
-           <Footer></Footer>
-        </>
+        <div className={'w-10/12 md:container mx-auto'}>
+            <BarreNavigation></BarreNavigation>
+            <Accueil></Accueil>
+        </div>
     )
 }
 
