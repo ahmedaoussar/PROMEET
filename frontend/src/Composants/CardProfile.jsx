@@ -2,11 +2,18 @@ import {
     Card,
     CardHeader,
     CardBody,
+    CardFooter,
+    Button,
     Typography,
   } from "@material-tailwind/react";
 
+function updateCards(profiles){
+    console.log(profiles)
+}
 
-export const CardProfile = () => {
+export const CardProfile = (key, item) => {
+    const profil = key.data 
+
     return (
         <Card className="mt-6 w-96">
             <CardHeader color="blue-gray" className="relative h-56">
@@ -15,14 +22,20 @@ export const CardProfile = () => {
                 alt="card-image"
                 />
             </CardHeader>
+
             <CardBody>
                 <Typography variant="h4" color="blue-gray" className="mb-2">
-                UI/UX Review Check
+                {profil.prenom + " " + profil.nom}
                 </Typography>
+
                 <Typography>
-                Description du profil
+                {profil.domaine + " - " + profil.sous_domaine + " - " + (profil.competences != null? profil.competences : "")}
                 </Typography>
             </CardBody>
+
+            <CardFooter className="pt-0">
+                <Button>View profile</Button>
+            </CardFooter>
         </Card>
    );
 };
