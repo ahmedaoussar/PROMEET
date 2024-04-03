@@ -1,7 +1,7 @@
-from http.client import HTTPException
+from fastapi import HTTPException
 from pydantic import BaseModel, EmailStr
 from fastapi import FastAPI
-from database import connect, initialize_db, recherche_dans_la_base
+from database import connect, initialize_db, recherche_dans_la_base,findUserById
 from src.model.User import User
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -29,3 +29,10 @@ async def startup_event():
 async def recherche(q: str):
     result = recherche_dans_la_base(q)
     return {'find': result}
+
+@app.get("/users/{userId}")
+async def create_user(userId: int):
+    user = findUserById(userId)
+    if user is None:
+        raise HTTPException(status_code=404, detail="User not found")
+    return  user
