@@ -4,12 +4,14 @@ from fastapi import FastAPI
 from database import connect, initialize_db, recherche_dans_la_base
 from src.model.User import User
 from fastapi.middleware.cors import CORSMiddleware
+from src.model.Formulaire import Formulaire
 
 app = FastAPI()
 conn = connect()
 cursor = conn.cursor()
 
 origins = [
+
     "http://localhost:5173",
 ]
 
@@ -29,3 +31,13 @@ async def startup_event():
 async def recherche(q: str):
     result = recherche_dans_la_base(q)
     return {'find': result}
+
+
+@app.post("/send_email")
+async def send_email(formulaire: Formulaire):
+    lastname = formulaire.lastname
+    firstname = formulaire.firstname
+    email = formulaire.email
+    phone_number = formulaire.phoneNumber
+    message = formulaire.message
+    return {"message": "Données du formulaire traitées avec succès"}
