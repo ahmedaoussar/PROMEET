@@ -1,11 +1,14 @@
-import { Formulaire } from "../Composants/Formulaire"
-import { BarreNavigation } from "../Composants/BarreNavigation"
+import {Formulaire} from "../Composants/Formulaire"
+import SearchBar from '../Composants/SearchBar.jsx';
+import {HeadAfterBNav} from "../Composants/HeadAfterBNav.jsx"; // Importez le composant de barre de recherche
 
 export const Accueil = () => {
     return (
         <div>
-            <BarreNavigation></BarreNavigation>
-            <Formulaire></Formulaire>
+            <HeadAfterBNav></HeadAfterBNav>
+            <SearchBar search={false}/>
+            <Formulaire/>
         </div>
     )
 }
+
