@@ -8,11 +8,3 @@ class User(BaseModel):
     email: str
     mdp: str
     telephone: str
-    description_profil: str
-    profession_id: int
-    sous_domaine: int
-    entreprise: int
-    name: str
-    age: int
-
-    

@@ -104,10 +104,10 @@ def initialize_db_personne():
         mdp VARCHAR(255),
         telephone VARCHAR(255),
         role VARCHAR(50) default 'user',
-        description_profil VARCHAR(255),
-        profession_id INT,
-        sous_domaine INT,
-        entreprise INT,
+        description_profil VARCHAR(255) null ,
+        profession_id INT null,
+        sous_domaine INT null,
+        entreprise INT null,
         FOREIGN KEY (profession_id) REFERENCES profession(id),
         FOREIGN KEY (sous_domaine) REFERENCES sous_domaine(id),
         FOREIGN KEY (entreprise) REFERENCES entreprise(id),
@@ -632,10 +632,9 @@ def createUser(user: User):
         conn = connect()
         cursor = conn.cursor()
         password = get_hashed_password(user.mdp)
-        cursor.execute(f"""INSERT INTO personne (nom, prenom, email, mdp, telephone, description_profil, profession_id, sous_domaine, entreprise)
-        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)""",
-                       (user.nom, user.prenom, user.email, password, user.telephone, user.description_profil,
-                        user.profession_id, user.sous_domaine, user.entreprise))
+        cursor.execute(f"""INSERT INTO personne (nom, prenom, email, mdp, telephone)
+        VALUES (%s, %s, %s, %s, %s)""",
+                       (user.nom, user.prenom, user.email, password, user.telephone))
         conn.commit()
         conn.close()
         return True
