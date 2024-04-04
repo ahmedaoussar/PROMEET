@@ -1,7 +1,7 @@
-from http.client import HTTPException
+from fastapi import HTTPException
 from pydantic import BaseModel, EmailStr
 from fastapi import FastAPI
-from database import connect, initialize_db, recherche_dans_la_base
+from database import connect, initialize_db, recherche_dans_la_base,findUserById
 from src.model.User import User
 from fastapi.middleware.cors import CORSMiddleware
 from src.model.Formulaire import Formulaire
@@ -41,3 +41,11 @@ async def send_email(formulaire: Formulaire):
     phone_number = formulaire.phoneNumber
     message = formulaire.message
     return {"message": "Données du formulaire traitées avec succès"}
+
+@app.get("/users/{userId}")
+async def create_user(userId: int):
+    user = findUserById(userId)
+    if user is None:
+        raise HTTPException(status_code=404, detail="User not found")
+    return  user
+
