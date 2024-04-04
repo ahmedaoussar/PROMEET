@@ -2,7 +2,7 @@ import mysql.connector
 from dotenv import load_dotenv
 import os
 from src.model import User
-from src.model.User import get_password_hash
+from src.utils import get_hashed_password
 
 load_dotenv()
 
@@ -100,16 +100,18 @@ def initialize_db_personne():
         id INT AUTO_INCREMENT PRIMARY KEY,
         nom VARCHAR(255),
         prenom VARCHAR(255),
-        email VARCHAR(255),
+        email VARCHAR(100) ,
         mdp VARCHAR(255),
         telephone VARCHAR(255),
+        role VARCHAR(50) default 'user',
         description_profil VARCHAR(255),
         profession_id INT,
         sous_domaine INT,
         entreprise INT,
         FOREIGN KEY (profession_id) REFERENCES profession(id),
         FOREIGN KEY (sous_domaine) REFERENCES sous_domaine(id),
-        FOREIGN KEY (entreprise) REFERENCES entreprise(id)
+        FOREIGN KEY (entreprise) REFERENCES entreprise(id),
+         UNIQUE KEY unique_email (email)
     );
     """
     cursor.execute(query)
@@ -606,11 +608,30 @@ def findUserById(userId: int):
         return None
 
 
+def findUserByEmail(email: str):
+    try:
+        conn = connect()
+        cursor = conn.cursor(dictionary=True)
+        # Use parameterized query to prevent SQL injection
+        cursor.execute("""SELECT
+            personne.email,
+            personne.role,
+            personne.mdp
+        FROM personne
+        WHERE personne.email = %s""", (email,))
+        results = cursor.fetchone()
+        conn.close()
+        return results
+    except Exception as e:
+        print(f"Error in findUserByEmail: {e}")
+        return None
+
+
 def createUser(user: User):
     try:
         conn = connect()
         cursor = conn.cursor()
-        password = get_password_hash(user.mdp)
+        password = get_hashed_password(user.mdp)
         cursor.execute(f"""INSERT INTO personne (nom, prenom, email, mdp, telephone, description_profil, profession_id, sous_domaine, entreprise)
         VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)""",
                        (user.nom, user.prenom, user.email, password, user.telephone, user.description_profil,
