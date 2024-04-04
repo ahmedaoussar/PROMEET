@@ -12,3 +12,7 @@ class User(BaseModel):
     profession_id: int
     sous_domaine: int
     entreprise: int
+    name: str
+    age: int
+
+    
