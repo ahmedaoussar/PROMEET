@@ -36,7 +36,7 @@ export function BarreNavigation() {
                         <span className="text-white">Recherche</span>
                     </Button>
                     {/* Bouton pour se connecter */}
-                    <Link to={"/login"} className="bg-bleuFonce text-white py-1 px-4 rounded">
+                    <Link to={"/login"} className="bg-bleuFonce text-white py-1 px-4 rounded hidden lg:inline-block">
                             Login
                     </Link>
                 </div>
