@@ -31,11 +31,14 @@ export function BarreNavigation() {
                     ProMEET
                 </Link>
                 <div className="flex items-center gap-x-4">
-                    <Button
-                        size="sm"
-                        className=" bg-bleuFonce hidden lg:inline-block">
-                        <span className="text-white">Recherche</span>
-                    </Button>
+                    <Link to={"/recherche"}>
+                        <Button
+                            size="sm"
+                            className=" bg-bleuFonce hidden lg:inline-block">
+                            <span className="text-white">Recherche</span>
+                            
+                        </Button>
+                    </Link>
                     {/* Bouton pour se connecter */}
                     {auth.isAuthenticated ?
                         <div>
