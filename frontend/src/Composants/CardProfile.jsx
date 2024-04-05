@@ -8,15 +8,21 @@ import {
   } from "@material-tailwind/react";
 import { Chip } from "@material-tailwind/react";
 
-export const CardProfile = ({ data }) => {//= (key, item) => {
-    const profil = data //key.data
-    /*
+export const CardProfile = ({ data }) => {
+    const profil = data 
+    let competencesArray; // Define competencesArray in the outer scope
     if(profil.competences){
-    const competencesArray = profil.competences.split(',');
+        competencesArray = profil.competences.split(',');
     }
     else{
         competencesArray =[""]
-    }*/
+    }
+    console.log(profil.prenom)
+    console.log(competencesArray);
+
+    const maxLength = 100; // the maximum length
+    const truncatedDescription = profil.description.length > maxLength ? profil.description.slice(0, maxLength) + '...' : profil.description;
+
     return (
         <Card className="mt-6 w-96">
             <CardHeader color="blue-gray" className="relative h-56">
@@ -32,20 +38,16 @@ export const CardProfile = ({ data }) => {//= (key, item) => {
                 </Typography>
 
                 <Typography>
-                {profil.domaine + " - " + profil.sous_domaine + " - " /*+ (profil.competences != null? profil.competences : "")*/}
+                {profil.domaine + " - " + profil.sous_domaine + " - "}
                 <div className="flex flex-wrap items-end gap-2">
-                {/*competencesArray.map((competence, index) => (
-                /*<li key={index}>{competence.trim()}</li>*/
-                    <Chip className=" bg-bleuFonce hidden lg:inline-block" value={"hs"/*competence.trim()*/} />
-                /*))*/}
+                {competencesArray.map((competence, index) => (
+                    <Chip className=" bg-bleuFonce hidden lg:inline-block" key={index} value={competence.trim()} />
+                ))}
                 </div>
                 </Typography>
 
                 <p>
-                {
-                console.log(profil)/* ASUPP */}
-                {console.log(profil.description)/*ASUPP */}
-                {profil.description}
+                {truncatedDescription}
                 </p>
             </CardBody>
 

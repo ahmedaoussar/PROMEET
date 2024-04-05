@@ -1,5 +1,6 @@
 import React from "react";
 import SearchBar from '../Composants/SearchBar.jsx';
+
 import { HeadAfterBNav } from "../Composants/HeadAfterBNav.jsx";
 import { Formulaire } from "../Composants/Formulaire";
 
@@ -14,23 +15,8 @@ export const Accueil = () => {
         <div>
             <HeadAfterBNav />
             {/* Passer la fonction handleSearch en tant que prop à SearchBar */}
-            <SearchBar search={false} handleSearch={handleSearch} />
+            <SearchBar search={false} handleSearch={handleSearch} ></SearchBar>
             <Formulaire />
         </div>
     );
 }
-/*
-import SearchBar from '../Composants/SearchBar.jsx';
-import {HeadAfterBNav} from "../Composants/HeadAfterBNav.jsx"; // Importez le composant de barre de recherche
-import { Formulaire } from "../Composants/Formulaire"
-
-export const Accueil = () => {
-    return (
-        <div>
-            <HeadAfterBNav></HeadAfterBNav>
-            <SearchBar search={false}/>
-            <Formulaire/>
-        </div>
-    )
-}
-*/

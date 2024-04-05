@@ -1,17 +1,26 @@
-import {Button, Input} from "@material-tailwind/react";
+import { useState, useEffect } from "react";
 import axios from "axios";
+import {Button, Input} from "@material-tailwind/react";
 import {Link, useLocation} from "react-router-dom";
-import React, {useState} from "react";
+import React from "react";
 import updateCards from "./CardProfile";
+const SearchBar = ({ search, profilesRetrieved }) => {
+    const [filtres, setFiltres] = useState([]);
 
-function useQuery() {
-    const {search} = useLocation();
+    useEffect(() => {
+        axios.get('http://localhost:8000/domaine')
+            .then(response => {
+                const domaines = response.data.find;
+                setFiltres(domaines);
+            })
+            .catch(error => {
+                console.error('Error fetching domaines:', error);
+            });
+    }, []); 
 
-    return React.useMemo(() => new URLSearchParams(search), [search]);
-}
+    const shuffledDomains = filtres.sort(() => 0.5 - Math.random());
+    const selectedDomains = shuffledDomains.slice(0, 6);
 
-const SearchBar = ({search, profilesRetrieved}) => {
-    const params = useQuery()
     const [query, setQuery] = useState()//setQuery fonction permettant d'initialialiser la reponse a query
 
     function handleSearch(event) {
@@ -23,7 +32,6 @@ const SearchBar = ({search, profilesRetrieved}) => {
         
         })
     }
-
     return (
         <form onSubmit={handleSearch}//appel de la fonction handleSearch
             profiles = {query} //attribut initialisé par la réponse de l'api
@@ -69,19 +77,17 @@ const SearchBar = ({search, profilesRetrieved}) => {
             </div>
             <div className="h-1 bg-blue-900 w-full mt-2 rounded"></div>
             <div className="flex justify-center mt-2 flex-wrap 2xl:flex-nowrap gap-3">
-                {[...Array(6)].map((_, index) => (
-                    <button key={index}
-                            className="text-white font-bold bg-bleuFonce rounded-lg px-4 py-2 mx-1 w-44 2xl:w-full break-words">Analyste</button>
+                {selectedDomains.map((item, index) => (
+                    <Link to={'/recherche?q='+item.nom} className="w-full h-14">
+                    <Button
+                    className="text-white font-bold bg-bleuFonce rounded-lg h-14 px-4 py-2 mx-1 w-44 2xl:w-full break-words">
+                    {item.nom}
+                    </Button>
+                    </Link>
                 ))}
-            </div>  
+            </div> 
         </form>
     );
 };
 
 export default SearchBar;
-
-
-
-
-
-
