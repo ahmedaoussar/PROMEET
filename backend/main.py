@@ -3,7 +3,7 @@ from pydantic import BaseModel, EmailStr
 from fastapi import FastAPI
 from starlette import status
 from database import connect, initialize_db, recherche_dans_la_base, findUserById, findUserByEmail, createUser, \
-    updateUserById
+    updateUserById, findAllDomaines, findAllSousDomaines, findAllCompetences, findAllProfessions, findAllEntreprises
 from src.auth_bearer import JWTBearer
 from src.model.Token import TokenSchema, auth, TokenData
 from src.model.User import User, UpdateUser
@@ -109,3 +109,28 @@ async def login(form_data: auth):
         "refresh_token": create_refresh_token(user['id']),
     }
     return user
+
+
+@app.get('/domaines')
+async def get_domaines():
+    return findAllDomaines()
+
+
+@app.get('/sous_domaines')
+async def get_sous_domaines():
+    return findAllSousDomaines()
+
+
+@app.get('/competences')
+async def get_competences():
+    return findAllCompetences()
+
+
+@app.get('/professions')
+async def get_professions():
+    return findAllProfessions()
+
+
+@app.get('/entreprises')
+async def get_entreprises():
+    return findAllEntreprises()
