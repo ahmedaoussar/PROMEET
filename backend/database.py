@@ -699,3 +699,43 @@ def updateUserById(userId: int, user: UpdateUser):
     except Exception as e:
         print(f"Error in updateUserById: {e}")
         return None
+
+
+def findAllDomaines():
+    conn = connect()
+    cursor = conn.cursor()
+    cursor.execute("SELECT nom FROM domaine")
+    domaines = cursor.fetchall()
+    return domaines
+
+
+def findAllSousDomaines():
+    conn = connect()
+    cursor = conn.cursor()
+    cursor.execute("SELECT nom FROM sous_domaine")
+    sous_domaines = cursor.fetchall()
+    return sous_domaines
+
+
+def findAllCompetences():
+    conn = connect()
+    cursor = conn.cursor()
+    cursor.execute("SELECT nom FROM competence")
+    competences = cursor.fetchall()
+    return competences
+
+
+def findAllProfessions():
+    conn = connect()
+    cursor = conn.cursor()
+    cursor.execute("SELECT nom FROM profession")
+    professions = cursor.fetchall()
+    return professions
+
+
+def findAllEntreprises():
+    conn = connect()
+    cursor = conn.cursor()
+    cursor.execute("SELECT nom FROM entreprise")
+    entreprises = cursor.fetchall()
+    return entreprises
