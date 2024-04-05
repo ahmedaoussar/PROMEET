@@ -3,10 +3,10 @@ import { Avatar, Typography } from "@material-tailwind/react";
 
 export function InfoProfil() {
   return (
-    <div>
-      <div className="flex items-center w-full">
+    <div className={' my-5 md:my-36'}>
+      <div className="flex flex-col md:flex-row gap-6 items-center w-full">
         <Avatar src="https://docs.material-tailwind.com/img/face-2.jpg" alt="avatar" size="xxl"/>
-        <div className="border border-bleuFonce p-4 rounded-md m-4 flex-1 bg-nuanceBlanc">
+        <div className="border border-bleuFonce p-4 rounded-md flex-1 bg-nuanceBlanc w-full">
           <Typography variant="h4" className="text-bleuFonce">
             Nom Prenom
           </Typography>
