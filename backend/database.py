@@ -583,6 +583,7 @@ def findUserById(userId: int):
         conn = connect()
         cursor = conn.cursor(dictionary=True)
         cursor.execute(f"""SELECT
+            personne.id,
             personne.nom,
             personne.prenom,
             personne.email,
