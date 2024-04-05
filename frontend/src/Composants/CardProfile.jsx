@@ -6,14 +6,17 @@ import {
     Button,
     Typography,
   } from "@material-tailwind/react";
+import { Chip } from "@material-tailwind/react";
 
-function updateCards(profiles){
-    console.log(profiles)
-}
-
-export const CardProfile = (key, item) => {
-    const profil = key.data 
-
+export const CardProfile = ({ data }) => {//= (key, item) => {
+    const profil = data //key.data
+    /*
+    if(profil.competences){
+    const competencesArray = profil.competences.split(',');
+    }
+    else{
+        competencesArray =[""]
+    }*/
     return (
         <Card className="mt-6 w-96">
             <CardHeader color="blue-gray" className="relative h-56">
@@ -25,12 +28,25 @@ export const CardProfile = (key, item) => {
 
             <CardBody>
                 <Typography variant="h4" color="blue-gray" className="mb-2">
-                {profil.prenom + " " + profil.nom}
+                {profil.prenom + " " + profil.nom}{/*on affiche les infos de chaque objet*/}
                 </Typography>
 
                 <Typography>
-                {profil.domaine + " - " + profil.sous_domaine + " - " + (profil.competences != null? profil.competences : "")}
+                {profil.domaine + " - " + profil.sous_domaine + " - " /*+ (profil.competences != null? profil.competences : "")*/}
+                <div className="flex flex-wrap items-end gap-2">
+                {/*competencesArray.map((competence, index) => (
+                /*<li key={index}>{competence.trim()}</li>*/
+                    <Chip className=" bg-bleuFonce hidden lg:inline-block" value={"hs"/*competence.trim()*/} />
+                /*))*/}
+                </div>
                 </Typography>
+
+                <p>
+                {
+                console.log(profil)/* ASUPP */}
+                {console.log(profil.description)/*ASUPP */}
+                {profil.description}
+                </p>
             </CardBody>
 
             <CardFooter className="pt-0">

@@ -12,20 +12,21 @@ function useQuery() {
 
 const SearchBar = ({search, profilesRetrieved}) => {
     const params = useQuery()
-    const [query, setQuery] = useState()
+    const [query, setQuery] = useState()//setQuery fonction permettant d'initialialiser la reponse a query
 
     function handleSearch(event) {
-        event.preventDefault()
-        axios.get('http://localhost:8000/recherche?q=' + event.target.query.value).then((response) => {
-            setQuery(response.data.find)
+        event.preventDefault() //Eviter de rafraichir la page
+        axios.get('http://localhost:8000/recherche?q=' + event.target.query.value).then((response) => {//ajout de la valeur du parametre query.value
+            setQuery(response.data.find) //setQuery initialise la variable query par la réponse de l'api
         
-            profilesRetrieved(response.data.find);
+            profilesRetrieved(response.data.find); //fonction prop pour lui passer la réponse de l'api
+        
         })
     }
 
     return (
-        <form onSubmit={handleSearch}
-            profiles = {query}
+        <form onSubmit={handleSearch}//appel de la fonction handleSearch
+            profiles = {query} //attribut initialisé par la réponse de l'api
               className="w-full mx-auto rounded-xl bg-nuanceBlanc border border-bleuFonce py-4 px-2">
             <label htmlFor="default-search"
                    className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
@@ -36,9 +37,9 @@ const SearchBar = ({search, profilesRetrieved}) => {
                     label="Trouver un PRO"
                     className="pr-20"
                     required
-                    onChange={(event) => setQuery(event.target.value)}
+                    onChange={(event) => setQuery(event.target.value)} //quand on change la valeur du champs, on initialise query avec la valeur entrée dans le champ
                 />
-                {search ? <Button
+                {search ? <Button //If search est true on affiche un bouton, sinon un lien
                         type={"submit"}
                         size="sm"
                         className="!absolute right-1 top-1 rounded text-white bg-bleuFonce flex items-center gap-3"
@@ -50,8 +51,9 @@ const SearchBar = ({search, profilesRetrieved}) => {
                         </svg>
                         Chercher
                     </Button> 
-                    :
-                    <Link to={query ? '/recherche?q=' + query : '/recherche'}
+                    : //sinon on affiche un lien de redirection vers la page de recherche
+                    <Link to={query ? '/recherche?q=' + query : '/recherche'} //si la valeur du champ passé à query n'est pas vide on passe la valeur q à l'url
+                    //sinon on lui passe rien
                           className="!absolute right-1 top-1 rounded text-white bg-bleuFonce flex items-center gap-3 py-1 px-2"
                     >
                         <svg className="w-4 h-4 text-white " aria-hidden="true"
@@ -71,7 +73,7 @@ const SearchBar = ({search, profilesRetrieved}) => {
                     <button key={index}
                             className="text-white font-bold bg-bleuFonce rounded-lg px-4 py-2 mx-1 w-44 2xl:w-full break-words">Analyste</button>
                 ))}
-            </div>
+            </div>  
         </form>
     );
 };
