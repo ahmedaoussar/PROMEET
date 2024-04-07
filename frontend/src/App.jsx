@@ -1,6 +1,7 @@
 import {BarreNavigation} from "./Composants/BarreNavigation"
 import {Accueil} from "./Pages/Accueil.jsx";
 import {BrowserRouter, Route, Routes} from "react-router-dom";
+import {Backoffice} from "./Pages/Backoffice.jsx";
 
 
 function App() {
@@ -13,8 +14,10 @@ function App() {
                     <Route path="/" Component={Accueil}/>
                     {/*<Route path="/recherche" Component={}/> TODO*/}
                     {/*<Route path="/login" Component={}/> TODO*/}
+                    <Route path="/" Component={Backoffice}/>
                 </Routes>
             </BrowserRouter>
+            <Backoffice></Backoffice>
         </div>
     )
 }

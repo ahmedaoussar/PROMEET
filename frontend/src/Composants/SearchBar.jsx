@@ -8,7 +8,6 @@ function useQuery() {
 
     return React.useMemo(() => new URLSearchParams(search), [search]);
 }
-
 const SearchBar = ({search}) => {
     const params = useQuery()
     const [query, setQuery] = useState()
