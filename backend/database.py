@@ -15,7 +15,6 @@ MYSQL_USER = os.getenv("MYSQL_USER")
 MYSQL_PASSWORD = os.getenv("MYSQL_PASSWORD")
 MYSQL_DB = os.getenv("MYSQL_DB")
 
-
 def connect():
     return mysql.connector.connect(
         host=MYSQL_HOST,
@@ -23,7 +22,6 @@ def connect():
         password=MYSQL_PASSWORD,
         database=MYSQL_DB
     )
-
 
 def initialize_db_profession():
     conn = connect()
@@ -34,9 +32,8 @@ def initialize_db_profession():
            nom VARCHAR(255)
        );
     """
-    cursor.execute(query, multi=True)
+    cursor.execute(query,multi=True)
     conn.close()
-
 
 def initialize_db_domaine():
     conn = connect()
@@ -49,7 +46,6 @@ def initialize_db_domaine():
     """
     cursor.execute(query)
     conn.close()
-
 
 def initialize_db_sous_domaine():
     conn = connect()
@@ -65,7 +61,6 @@ def initialize_db_sous_domaine():
     cursor.execute(query)
     conn.close()
 
-
 def initialize_db_competence():
     conn = connect()
     cursor = conn.cursor()
@@ -79,7 +74,6 @@ def initialize_db_competence():
     """
     cursor.execute(query)
     conn.close()
-
 
 def initialize_db_entreprise():
     conn = connect()
@@ -95,7 +89,6 @@ def initialize_db_entreprise():
     cursor.execute(query)
     conn.close()
 
-
 def initialize_db_personne():
     conn = connect()
     cursor = conn.cursor()
@@ -104,23 +97,20 @@ def initialize_db_personne():
         id INT AUTO_INCREMENT PRIMARY KEY,
         nom VARCHAR(255),
         prenom VARCHAR(255),
-        email VARCHAR(100) ,
+        email VARCHAR(255),
         mdp VARCHAR(255),
         telephone VARCHAR(255),
-        role VARCHAR(50) default 'user',
-        description_profil VARCHAR(255) null ,
-        profession_id INT null,
-        sous_domaine INT null,
-        entreprise INT null,
+        description_profil VARCHAR(255),
+        profession_id INT,
+        sous_domaine INT,
+        entreprise INT,
         FOREIGN KEY (profession_id) REFERENCES profession(id),
         FOREIGN KEY (sous_domaine) REFERENCES sous_domaine(id),
-        FOREIGN KEY (entreprise) REFERENCES entreprise(id),
-         UNIQUE KEY unique_email (email)
+        FOREIGN KEY (entreprise) REFERENCES entreprise(id)
     );
     """
     cursor.execute(query)
     conn.close()
-
 
 def initialize_value_domaine():
     conn = connect()
@@ -199,12 +189,11 @@ def initialize_value_domaine():
       ) LIMIT 1;
 
     """
-    generator = cursor.execute(query, multi=True)
+    generator = cursor.execute(query,multi=True)
     for query in generator:
         if query.with_rows:
             query.fetchall()
     conn.close()
-
 
 def initialize_value_sous_domaine():
     conn = connect()
@@ -324,12 +313,11 @@ def initialize_value_sous_domaine():
          SELECT nom FROM sous_domaine WHERE nom = 'Electronique' AND domaine_id = 12
       ) LIMIT 1;
     """
-    generator = cursor.execute(query, multi=True)
+    generator = cursor.execute(query,multi=True)
     for query in generator:
         if query.with_rows:
             query.fetchall()
     conn.close()
-
 
 def initialize_value_competence():
     conn = connect()
@@ -366,12 +354,11 @@ def initialize_value_competence():
        ) LIMIT 1;
 
     """
-    generator = cursor.execute(query, multi=True)
+    generator = cursor.execute(query,multi=True)
     for query in generator:
         if query.with_rows:
             query.fetchall()
     conn.close()
-
 
 def initialize_value_entreprise():
     conn = connect()
@@ -413,12 +400,11 @@ def initialize_value_entreprise():
           SELECT nom FROM entreprise WHERE nom = 'ATOS'
       ) LIMIT 1;
     """
-    generator = cursor.execute(query, multi=True)
+    generator = cursor.execute(query,multi=True)
     for query in generator:
         if query.with_rows:
             query.fetchall()
     conn.close()
-
 
 def initialize_value_profession():
     conn = connect()
@@ -472,12 +458,11 @@ def initialize_value_profession():
             SELECT nom FROM profession WHERE nom = 'Fonctionnaire'
         ) LIMIT 1;
     """
-    generator = cursor.execute(query, multi=True)
+    generator = cursor.execute(query,multi=True)
     for query in generator:
         if query.with_rows:
             query.fetchall()
     conn.close()
-
 
 def initialize_value_personne():
     conn = connect()
@@ -523,7 +508,6 @@ def initialize_value_personne():
 
     conn.close()
 
-
 def initialize_db():
     initialize_db_domaine()
     initialize_db_sous_domaine()
@@ -538,6 +522,20 @@ def initialize_db():
     initialize_value_profession()
     initialize_value_personne()
 
+#pour retourner les domaines sur la  barre de recherche_dans_la_base
+def retourner_domaines():
+    conn = connect()
+    cursor = conn.cursor(dictionary=True)
+    query = """
+    SELECT
+    	id,
+        nom
+    FROM
+       domaine"""
+    cursor.execute(query)
+    results = cursor.fetchall()
+    conn.close()
+    return results
 
 def recherche_dans_la_base(q: str):
     conn = connect()
@@ -548,6 +546,7 @@ def recherche_dans_la_base(q: str):
         personne.nom AS nom,
         personne.prenom AS prenom,
         profession.nom AS profession,
+        personne.description_profil AS description,
         sous_domaine.nom AS sous_domaine,
         domaine.nom AS domaine,
         GROUP_CONCAT(competence.nom) AS competences,
@@ -561,7 +560,7 @@ def recherche_dans_la_base(q: str):
     LEFT JOIN
         domaine ON sous_domaine.domaine_id = domaine.id
     LEFT JOIN
-        competence ON personne.sous_domaine = competence.personne_id
+        competence ON personne.id = competence.personne_id
     LEFT JOIN
         entreprise ON personne.entreprise = entreprise.id
     WHERE
@@ -575,8 +574,7 @@ def recherche_dans_la_base(q: str):
     GROUP BY personne.id
     """
     search_string = '%' + q + '%'
-    cursor.execute(query, (
-        search_string, search_string, search_string, search_string, search_string, search_string, search_string))
+    cursor.execute(query, (search_string, search_string, search_string, search_string, search_string, search_string, search_string))
     results = cursor.fetchall()
     conn.close()
     return results

@@ -1,15 +1,15 @@
 from fastapi import HTTPException, Depends
-from pydantic import BaseModel, EmailStr
 from fastapi import FastAPI
 from starlette import status
-from database import connect, initialize_db, recherche_dans_la_base, findUserById, findUserByEmail, createUser, \
-    updateUserById, findAllDomaines, findAllSousDomaines, findAllCompetences, findAllProfessions, findAllEntreprises
+from database import connect, initialize_db, retourner_domaines, findUserById, findUserByEmail, createUser, \
+    updateUserById, findAllDomaines, findAllSousDomaines, findAllCompetences, findAllProfessions, findAllEntreprises, \
+    recherche_dans_la_base
 from src.auth_bearer import JWTBearer
 from src.model.Token import TokenSchema, auth, TokenData
 from src.model.User import User, UpdateUser
+from src.model.User import User
 from fastapi.middleware.cors import CORSMiddleware
 from src.utils import (
-    get_hashed_password,
     create_access_token,
     create_refresh_token,
     verify_password, deserialize_token
@@ -44,6 +44,10 @@ async def recherche(q: str):
     result = recherche_dans_la_base(q)
     return {'find': result}
 
+@app.get("/domaine")
+async def domaine():
+    result = retourner_domaines()
+    return {'find': result}
 
 @app.post("/send_email")
 async def send_email(formulaire: Formulaire):
