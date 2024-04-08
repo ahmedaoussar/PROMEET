@@ -15,6 +15,7 @@ MYSQL_USER = os.getenv("MYSQL_USER")
 MYSQL_PASSWORD = os.getenv("MYSQL_PASSWORD")
 MYSQL_DB = os.getenv("MYSQL_DB")
 
+
 def connect():
     return mysql.connector.connect(
         host=MYSQL_HOST,
@@ -22,6 +23,7 @@ def connect():
         password=MYSQL_PASSWORD,
         database=MYSQL_DB
     )
+
 
 def initialize_db_profession():
     conn = connect()
@@ -32,8 +34,9 @@ def initialize_db_profession():
            nom VARCHAR(255)
        );
     """
-    cursor.execute(query,multi=True)
+    cursor.execute(query, multi=True)
     conn.close()
+
 
 def initialize_db_domaine():
     conn = connect()
@@ -46,6 +49,7 @@ def initialize_db_domaine():
     """
     cursor.execute(query)
     conn.close()
+
 
 def initialize_db_sous_domaine():
     conn = connect()
@@ -61,6 +65,7 @@ def initialize_db_sous_domaine():
     cursor.execute(query)
     conn.close()
 
+
 def initialize_db_competence():
     conn = connect()
     cursor = conn.cursor()
@@ -75,6 +80,7 @@ def initialize_db_competence():
     cursor.execute(query)
     conn.close()
 
+
 def initialize_db_entreprise():
     conn = connect()
     cursor = conn.cursor()
@@ -88,6 +94,7 @@ def initialize_db_entreprise():
     """
     cursor.execute(query)
     conn.close()
+
 
 def initialize_db_personne():
     conn = connect()
@@ -111,6 +118,7 @@ def initialize_db_personne():
     """
     cursor.execute(query)
     conn.close()
+
 
 def initialize_value_domaine():
     conn = connect()
@@ -189,11 +197,12 @@ def initialize_value_domaine():
       ) LIMIT 1;
 
     """
-    generator = cursor.execute(query,multi=True)
+    generator = cursor.execute(query, multi=True)
     for query in generator:
         if query.with_rows:
             query.fetchall()
     conn.close()
+
 
 def initialize_value_sous_domaine():
     conn = connect()
@@ -313,11 +322,12 @@ def initialize_value_sous_domaine():
          SELECT nom FROM sous_domaine WHERE nom = 'Electronique' AND domaine_id = 12
       ) LIMIT 1;
     """
-    generator = cursor.execute(query,multi=True)
+    generator = cursor.execute(query, multi=True)
     for query in generator:
         if query.with_rows:
             query.fetchall()
     conn.close()
+
 
 def initialize_value_competence():
     conn = connect()
@@ -354,11 +364,12 @@ def initialize_value_competence():
        ) LIMIT 1;
 
     """
-    generator = cursor.execute(query,multi=True)
+    generator = cursor.execute(query, multi=True)
     for query in generator:
         if query.with_rows:
             query.fetchall()
     conn.close()
+
 
 def initialize_value_entreprise():
     conn = connect()
@@ -400,11 +411,12 @@ def initialize_value_entreprise():
           SELECT nom FROM entreprise WHERE nom = 'ATOS'
       ) LIMIT 1;
     """
-    generator = cursor.execute(query,multi=True)
+    generator = cursor.execute(query, multi=True)
     for query in generator:
         if query.with_rows:
             query.fetchall()
     conn.close()
+
 
 def initialize_value_profession():
     conn = connect()
@@ -458,11 +470,12 @@ def initialize_value_profession():
             SELECT nom FROM profession WHERE nom = 'Fonctionnaire'
         ) LIMIT 1;
     """
-    generator = cursor.execute(query,multi=True)
+    generator = cursor.execute(query, multi=True)
     for query in generator:
         if query.with_rows:
             query.fetchall()
     conn.close()
+
 
 def initialize_value_personne():
     conn = connect()
@@ -508,6 +521,7 @@ def initialize_value_personne():
 
     conn.close()
 
+
 def initialize_db():
     initialize_db_domaine()
     initialize_db_sous_domaine()
@@ -522,7 +536,8 @@ def initialize_db():
     initialize_value_profession()
     initialize_value_personne()
 
-#pour retourner les domaines sur la  barre de recherche_dans_la_base
+
+# pour retourner les domaines sur la  barre de recherche_dans_la_base
 def retourner_domaines():
     conn = connect()
     cursor = conn.cursor(dictionary=True)
@@ -536,6 +551,7 @@ def retourner_domaines():
     results = cursor.fetchall()
     conn.close()
     return results
+
 
 def recherche_dans_la_base(q: str):
     conn = connect()
@@ -574,7 +590,8 @@ def recherche_dans_la_base(q: str):
     GROUP BY personne.id
     """
     search_string = '%' + q + '%'
-    cursor.execute(query, (search_string, search_string, search_string, search_string, search_string, search_string, search_string))
+    cursor.execute(query, (
+        search_string, search_string, search_string, search_string, search_string, search_string, search_string))
     results = cursor.fetchall()
     conn.close()
     return results
@@ -590,10 +607,11 @@ def findUserById(userId: int):
             personne.prenom,
             personne.email,
             personne.telephone,
-            personne.description_profil,
+            personne.description_profil as description,
             profession.nom as profession,
             sous_domaine.nom as sous_domaine,
             domaine.nom as domaine,
+            entreprise.nom as entreprise,
             GROUP_CONCAT(competence.nom) AS competences
         FROM personne
         LEFT JOIN profession ON personne.profession_id = profession.id
@@ -652,29 +670,11 @@ def updateUserById(userId: int, user: UpdateUser):
         conn = connect()
         cursor = conn.cursor(buffered=True)
 
-        # Get entreprise_id or insert new entreprise if not found
-        cursor.execute("""SELECT id FROM entreprise WHERE nom = %s""", (user.entreprise,))
-        row = cursor.fetchone()
-        if row is None:
-            cursor.execute(f"""INSERT INTO entreprise (nom, ville, code_postal)
-                              VALUES (%s, %s, %s)""",
-                           (user.entreprise, "Bordeaux", "33000"))
-            conn.commit()  # Commit the insert operation
-
-            cursor.execute(f"""SELECT id FROM entreprise WHERE nom = %s""", (user.entreprise,))
-            row = cursor.fetchone()
-
-        entreprise_id = row[0] if row else None
-
-        for competence in user.competences:
-
-            cursor.execute(f"""SELECT id FROM competence WHERE nom = %s AND personne_id = %s""",
-                           (competence, userId))
-            row = cursor.fetchone()
-            if row is None:
-                cursor.execute(f"""INSERT INTO competence (nom, personne_id)
-                                              VALUES (%s, %s)""",
-                               (competence, userId))
+        entreprise_id = findEntrepriseByUserId(user)
+        domaine_id = findDomaineByUserId(user)
+        profession_id = findProfessionByUserId(user)
+        sous_domaine_id = findSousDomaineByUserId(user)
+        updateCompetences(user)
 
         update_query = """
             UPDATE personne
@@ -684,7 +684,7 @@ def updateUserById(userId: int, user: UpdateUser):
         """
         cursor.execute(update_query, (
             user.nom, user.prenom, user.email, user.telephone,
-            user.description, user.profession, user.sous_domaine, entreprise_id, userId
+            user.description, profession_id, sous_domaine_id, entreprise_id, userId
         ))
 
         conn.commit()  # Commit the transaction
@@ -692,17 +692,98 @@ def updateUserById(userId: int, user: UpdateUser):
         # Close cursor and connection
         cursor.close()
         conn.close()
-
         return user
     except Exception as e:
         print(f"Error in updateUserById: {e}")
         return None
 
 
+def findEntrepriseByUserId(user: UpdateUser):
+    conn = connect()
+    cursor = conn.cursor(buffered=True)
+
+    cursor.execute("""SELECT id FROM entreprise WHERE nom = %s""", (user.entreprise,))
+    row = cursor.fetchone()
+    if row is None:
+        cursor.execute(f"""INSERT INTO entreprise (nom, ville, code_postal)
+                                  VALUES (%s, %s, %s)""",
+                       (user.entreprise, "Bordeaux", "33000"))
+        conn.commit()  # Commit the insert operation
+
+        cursor.execute(f"""SELECT id FROM entreprise WHERE nom = %s""", (user.entreprise,))
+        row = cursor.fetchone()
+    else:
+        entreprise_id = row[0] if row else None
+        return entreprise_id
+
+
+def findDomaineByUserId(user: UpdateUser):
+    conn = connect()
+    cursor = conn.cursor(buffered=True)
+
+    cursor.execute("""SELECT id FROM domaine WHERE nom = %s""", (user.domaine,))
+    row = cursor.fetchone()
+
+    domaine_id = row[0] if row else None
+    return domaine_id
+
+
+def findProfessionByUserId(user: UpdateUser):
+    conn = connect()
+    cursor = conn.cursor(buffered=True)
+
+    cursor.execute("""SELECT id FROM profession WHERE nom = %s""", (user.profession,))
+    row = cursor.fetchone()
+
+    profession_id = row[0] if row else None
+    return profession_id
+
+
+def findSousDomaineByUserId(user: UpdateUser):
+    conn = connect()
+    cursor = conn.cursor(buffered=True)
+
+    cursor.execute("""SELECT id FROM sous_domaine WHERE nom = %s""", (user.sous_domaine,))
+    row = cursor.fetchone()
+
+    sous_domaine_id = row[0] if row else None
+    return sous_domaine_id
+
+
+def updateCompetences(user: UpdateUser):
+    conn = connect()
+    cursor = conn.cursor(buffered=True)
+
+    cursor.execute("""SELECT id FROM personne WHERE email = %s""", (user.email,))
+    row = cursor.fetchone()
+    if row is None:
+        return None
+    else:
+        user_id = row[0] if row else None
+
+    cursor.execute("""DELETE FROM competence WHERE personne_id = %s""", (user_id,))
+    conn.commit()
+
+    print(user.competences)
+
+    try:
+        for competence in user.competences:
+            print(competence, user_id)
+            cursor.execute(f"""INSERT INTO competence (nom, personne_id)
+            VALUES (%s, %s)""", (competence, user_id))
+            conn.commit()
+    except Exception as e:
+        print(f"Error in updateCompetences: {e}")
+        return None
+
+    cursor.close()
+    conn.close()
+
+
 def findAllDomaines():
     conn = connect()
     cursor = conn.cursor()
-    cursor.execute("SELECT nom FROM domaine")
+    cursor.execute("SELECT  nom FROM domaine")
     domaines = cursor.fetchall()
     return domaines
 

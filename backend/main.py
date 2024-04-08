@@ -44,10 +44,12 @@ async def recherche(q: str):
     result = recherche_dans_la_base(q)
     return {'find': result}
 
+
 @app.get("/domaine")
 async def domaine():
     result = retourner_domaines()
     return {'find': result}
+
 
 @app.post("/send_email")
 async def send_email(formulaire: Formulaire):
@@ -59,18 +61,27 @@ async def send_email(formulaire: Formulaire):
     return {"message": "Données du formulaire traitées avec succès"}
 
 
-@app.get("/users/{userId}", response_model=User)
+@app.get("/users/{userId}", response_model=UpdateUser)
 async def create_user(userId: int):
     user = findUserById(userId)
     if user is None:
         raise HTTPException(status_code=404, detail="User not found")
+
+    if 'competences' in user:
+        if user['competences'] is None:
+            user['competences'] = []
+        else:
+            user['competences'] = user['competences'].split(',')
+
+    if 'profession' in user and user['profession'] is None:
+        user['profession'] = None
+
     return user
 
 
 @app.put('/update-users/{userId}', response_model=UpdateUser)
 async def update_user(userId: int, user: UpdateUser, token: TokenData = Depends(JWTBearer())):
     extracted_token = deserialize_token(token)
-
     id = extracted_token['sub'].split(',')[0]
     if str(id) != str(userId):
         raise HTTPException(
@@ -78,6 +89,7 @@ async def update_user(userId: int, user: UpdateUser, token: TokenData = Depends(
             detail="You are not authorized to perform this action"
         )
     user = updateUserById(userId, user)
+    print(user)
     if user is None:
         raise HTTPException(status_code=404, detail="User not found")
     return user
@@ -115,26 +127,12 @@ async def login(form_data: auth):
     return user
 
 
-@app.get('/domaines')
-async def get_domaines():
-    return findAllDomaines()
-
-
-@app.get('/sous_domaines')
-async def get_sous_domaines():
-    return findAllSousDomaines()
-
-
-@app.get('/competences')
-async def get_competences():
-    return findAllCompetences()
-
-
-@app.get('/professions')
-async def get_professions():
-    return findAllProfessions()
-
-
-@app.get('/entreprises')
-async def get_entreprises():
-    return findAllEntreprises()
+@app.get('/lists')
+async def get_allInfo():
+    return {
+        'domaine': findAllDomaines(),
+        'sous_domaine': findAllSousDomaines(),
+        'competences': findAllCompetences(),
+        'profession': findAllProfessions(),
+        'entreprise': findAllEntreprises()
+    }
