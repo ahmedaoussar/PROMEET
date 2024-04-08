@@ -1,8 +1,8 @@
 import React from "react";
 import SearchBar from '../Composants/SearchBar.jsx';
-
-import { HeadAfterBNav } from "../Composants/HeadAfterBNav.jsx";
-import { Formulaire } from "../Composants/Formulaire";
+import {HeadAfterBNav} from "../Composants/HeadAfterBNav.jsx"; // Importez le composant de barre de recherche
+import { Footer } from "../Composants/Footer"
+import { Formulaire } from "../Composants/Formulaire"
 
 export const Accueil = () => {
     // Fonction pour effectuer la recherche
