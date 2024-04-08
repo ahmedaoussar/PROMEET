@@ -516,6 +516,21 @@ def initialize_db():
     initialize_value_profession()
     initialize_value_personne()
 
+#pour retourner les domaines sur la  barre de recherche_dans_la_base
+def retourner_domaines():
+    conn = connect()
+    cursor = conn.cursor(dictionary=True)
+    query = """
+    SELECT
+    	id,
+        nom
+    FROM
+       domaine"""
+    cursor.execute(query)
+    results = cursor.fetchall()
+    conn.close()
+    return results
+
 def recherche_dans_la_base(q: str):
     conn = connect()
     cursor = conn.cursor(dictionary=True)
@@ -524,6 +539,7 @@ def recherche_dans_la_base(q: str):
     	personne.id,
         personne.nom AS nom,
         personne.prenom AS prenom,
+        personne.description_profil AS description,
         profession.nom AS profession,
         sous_domaine.nom AS sous_domaine,
         domaine.nom AS domaine,

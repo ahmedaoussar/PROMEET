@@ -1,7 +1,7 @@
 from http.client import HTTPException
 from pydantic import BaseModel, EmailStr
 from fastapi import FastAPI
-from database import connect, initialize_db, recherche_dans_la_base
+from database import connect, initialize_db, recherche_dans_la_base, retourner_domaines
 from src.model.User import User
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -28,4 +28,9 @@ async def startup_event():
 @app.get("/recherche")
 async def recherche(q: str):
     result = recherche_dans_la_base(q)
+    return {'find': result}
+
+@app.get("/domaine")
+async def domaine():
+    result = retourner_domaines()
     return {'find': result}
