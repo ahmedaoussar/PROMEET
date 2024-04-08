@@ -68,8 +68,8 @@ def initialize_db_competence():
     CREATE TABLE IF NOT EXISTS competence (
         id INT AUTO_INCREMENT PRIMARY KEY,
         nom VARCHAR(255),
-        domaine_id INT,
-        FOREIGN KEY (domaine_id) REFERENCES domaine(id)
+        personne_id INT,
+        FOREIGN KEY (personne_id) REFERENCES personne(id)
     );
     """
     cursor.execute(query)
@@ -323,34 +323,34 @@ def initialize_value_competence():
     conn = connect()
     cursor = conn.cursor()
     query = """
-       INSERT INTO competence (nom, domaine_id)
+       INSERT INTO competence (nom, personne_id)
        SELECT * FROM (SELECT 'HTML', 1) AS tmp
        WHERE NOT EXISTS (
-           SELECT nom FROM competence WHERE nom = 'HTML' AND domaine_id = 1
+           SELECT nom FROM competence WHERE nom = 'HTML' AND personne_id = 1
        ) LIMIT 1;
 
-       INSERT INTO competence (nom, domaine_id)
+       INSERT INTO competence (nom, personne_id)
        SELECT * FROM (SELECT 'PHP', 1) AS tmp
        WHERE NOT EXISTS (
-           SELECT nom FROM competence WHERE nom = 'PHP' AND domaine_id = 1
+           SELECT nom FROM competence WHERE nom = 'PHP' AND personne_id = 1
        ) LIMIT 1;
 
-       INSERT INTO competence (nom, domaine_id)
+       INSERT INTO competence (nom, personne_id)
        SELECT * FROM (SELECT 'Analyse financière avancée', 2) AS tmp
        WHERE NOT EXISTS (
-           SELECT nom FROM competence WHERE nom = 'Analyse financière avancée' AND domaine_id = 2
+           SELECT nom FROM competence WHERE nom = 'Analyse financière avancée' AND personne_id = 2
        ) LIMIT 1;
 
-       INSERT INTO competence (nom, domaine_id)
+       INSERT INTO competence (nom, personne_id)
        SELECT * FROM (SELECT 'Conception de pièces mécaniques', 3) AS tmp
        WHERE NOT EXISTS (
-           SELECT nom FROM competence WHERE nom = 'Conception de pièces mécaniques' AND domaine_id = 3
+           SELECT nom FROM competence WHERE nom = 'Conception de pièces mécaniques' AND personne_id = 3
        ) LIMIT 1;
 
-       INSERT INTO competence (nom, domaine_id)
+       INSERT INTO competence (nom, personne_id)
        SELECT * FROM (SELECT 'Stratégie de contenu', 4) AS tmp
        WHERE NOT EXISTS (
-           SELECT nom FROM competence WHERE nom = 'Stratégie de contenu' AND domaine_id = 4
+           SELECT nom FROM competence WHERE nom = 'Stratégie de contenu' AND personne_id = 4
        ) LIMIT 1;
 
     """
@@ -546,6 +546,7 @@ def recherche_dans_la_base(q: str):
         personne.nom AS nom,
         personne.prenom AS prenom,
         profession.nom AS profession,
+        personne.description_profil AS description,
         sous_domaine.nom AS sous_domaine,
         domaine.nom AS domaine,
         GROUP_CONCAT(competence.nom) AS competences,
@@ -559,7 +560,7 @@ def recherche_dans_la_base(q: str):
     LEFT JOIN
         domaine ON sous_domaine.domaine_id = domaine.id
     LEFT JOIN
-        competence ON personne.sous_domaine = competence.domaine_id
+        competence ON personne.id = competence.personne_id
     LEFT JOIN
         entreprise ON personne.entreprise = entreprise.id
     WHERE

@@ -1,17 +1,15 @@
-from http.client import HTTPException
-from pydantic import BaseModel, EmailStr
+from fastapi import HTTPException, Depends
 from fastapi import FastAPI
 from starlette import status
-from database import connect, initialize_db, recherche_dans_la_base, findUserById, findUserByEmail, createUser, \
-    updateUserById, findAllDomaines, findAllSousDomaines, findAllCompetences, findAllProfessions, findAllEntreprises
+from database import connect, initialize_db, retourner_domaines, findUserById, findUserByEmail, createUser, \
+    updateUserById, findAllDomaines, findAllSousDomaines, findAllCompetences, findAllProfessions, findAllEntreprises, \
+    recherche_dans_la_base
 from src.auth_bearer import JWTBearer
 from src.model.Token import TokenSchema, auth, TokenData
 from src.model.User import User, UpdateUser
-from database import connect, initialize_db, recherche_dans_la_base, retourner_domaines
 from src.model.User import User
 from fastapi.middleware.cors import CORSMiddleware
 from src.utils import (
-    get_hashed_password,
     create_access_token,
     create_refresh_token,
     verify_password, deserialize_token
@@ -23,6 +21,7 @@ conn = connect()
 cursor = conn.cursor()
 
 origins = [
+
     "http://localhost:5173",
 ]
 
@@ -34,9 +33,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
 @app.on_event("startup")
 async def startup_event():
     initialize_db()
+
 
 @app.get("/recherche")
 async def recherche(q: str):
