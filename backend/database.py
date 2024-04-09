@@ -819,3 +819,12 @@ def findAllEntreprises():
     cursor.execute("SELECT nom FROM entreprise")
     entreprises = cursor.fetchall()
     return entreprises
+
+
+def delUserById(userId: int):
+    conn = connect()
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM personne WHERE id = %s", (userId,))
+    conn.commit()
+    conn.close()
+    return True
