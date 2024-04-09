@@ -11,6 +11,7 @@ import {updateProfileStore} from "../store/updateProfilStore.js";
 export function InfoProfil() {
     const {id} = useParams();
     const [notEntreprise, setNotEntreprise] = useState(false);
+    const [notCompetence, setNotCompetence] = useState(false);
     const {
         user,
         setNom, setPrenom, setEmail,
@@ -50,10 +51,6 @@ export function InfoProfil() {
                 setCompetences(competences)
 
             })
-            .catch(error => {
-                console.error('Error fetching user data:', error);
-            });
-
         axios.get('http://localhost:8000/lists')
             .then((response) => {
                 for (let key in response.data) {
@@ -63,20 +60,18 @@ export function InfoProfil() {
                 }
                 setLists(response.data)
             })
-            .catch(error => {
-                console.error('Error fetching lists:', error);
-                if (error.response.status === 403) {
-                    auth.logout()
-                }
-            });
-
-
-    }, []);
+    }, [id]);
 
     function handleUpdate() {
-        console.log(user)
+        console.log(user.entreprise)
         if (auth.isAuthenticated) {
             if (user.email !== "" && user.nom !== "" && user.prenom !== "" && user.telephone !== "" && user.description !== "" && user.domaine.value !== "" && user.sous_domaine.value !== "" && user.profession.value !== "" && user.competences.value !== []) {
+                let entreprise;
+                if (notEntreprise) {
+                    entreprise = user.entreprise
+                } else {
+                    entreprise = user.entreprise.value
+                }
 
                 let formatedUser = {
                     nom: user.nom,
@@ -87,7 +82,7 @@ export function InfoProfil() {
                     domaine: user.domaine.value,
                     sous_domaine: user.sous_domaine.value,
                     profession: user.profession.value,
-                    entreprise: user.entreprise.value,
+                    entreprise: entreprise,
                     competences: user.competences.map(competence => competence.value)
                 }
                 toast.promise(axios.put('http://localhost:8000/update-users/' + auth.user.id, formatedUser, {
@@ -122,12 +117,24 @@ export function InfoProfil() {
         }
     }
 
+    function handleAddCompetence(value) {
+        value.preventDefault()
+        let competence = value.target[0].value
+        if (competence !== "") {
+            setCompetences([...user.competences, {
+                value: competence,
+                label: competence
+            }])
+            value.target[0].value = ""
+        }
+    }
+
     return (
         <div className={' my-5 md:my-36'}>
             <div className="flex flex-col md:flex-row gap-6 items-center w-full">
                 <Avatar src="https://docs.material-tailwind.com/img/face-2.jpg" alt="avatar" size="xxl"/>
                 <div className="border border-bleuFonce p-4 rounded-md flex-1 bg-nuanceBlanc w-full">
-                    {auth.isAuthenticated ?
+                    {auth.isAuthenticated && auth.user.id == id ?
                         <div className={"flex flex-col md:flex-row justify-between gap-10"}>
                             <div className={'w-full flex flex-col gap-4'}>
                                 <Input
@@ -181,7 +188,7 @@ export function InfoProfil() {
 
             <div className="mx-auto w-full mt-10">
                 <div className="border border-bleuFonce p-4 rounded-xl bg-nuanceBlanc">
-                    {auth.isAuthenticated ?
+                    {auth.isAuthenticated && auth.user.id == id ?
                         <>
                             <div className="mb-4">
                                 <h1 className="text-bleuFonce font-semibold mb-2">Description</h1>
@@ -199,7 +206,6 @@ export function InfoProfil() {
                                         <Input
                                             label={"Entreprise"}
                                             onChange={(e) => setEntreprise(e.target.value)}
-                                            value={user.entreprise}
                                             required={true}
                                         >
                                         </Input>
@@ -209,29 +215,18 @@ export function InfoProfil() {
                                             onChange={(value) => {
                                                 setEntreprise(value)
                                             }}
-                                            isSearchable={true}
                                             required={true}
                                             options={lists.entreprise}
                                         />
                                     }
-                                    <Button onClick={() => setNotEntreprise(!notEntreprise)}
+                                    <Button onClick={() => {
+                                        setNotEntreprise(!notEntreprise)
+                                    }}
                                             className={`text-white ${notEntreprise ? "bg-red-500" : "bg-bleuFonce"}`}
                                             size={"sm"}>
                                         {notEntreprise ? "Annuler" : "Ajouter une entreprise"}
                                     </Button>
                                 </div>
-                            </div>
-                            <div className="mb-4">
-                                <h3 className="text-bleuFonce font-medium mb-2">Domaine : </h3>
-                                <Select
-                                    value={user.domaine}
-                                    onChange={(value) => {
-                                        setDomaine(value)
-                                    }}
-                                    isSearchable={true}
-                                    required={true}
-                                    options={lists.domaine}
-                                />
                             </div>
                             <div className="mb-4">
                                 <h3 className="text-bleuFonce font-medium mb-2">Sous Domaine : </h3>
@@ -258,16 +253,53 @@ export function InfoProfil() {
                             </div>
                             <div className="mb-4">
                                 <h3 className="text-bleuFonce font-medium mb-2">Compétences : </h3>
-                                <Select
-                                    value={user.competences}
-                                    onChange={(value) => {
-                                        setCompetences(value)
+                                <div className={"flex flex-col md:flex-row gap-4"}>
+                                    {notCompetence ?
+                                        <form onSubmit={handleAddCompetence} action="" className={'w-full'}>
+                                            <div className={"flex gap-2 flex-wrap mb-4"}>
+                                                {user.competences.length > 0 ?
+                                                    user.competences.map((competence, index) => {
+                                                        return <Chip
+                                                            key={index}
+                                                            className={`text-white bg-bleuFonce w-fit mt-4`}
+                                                            size={"sm"} value={competence.value}/>
+                                                    })
+                                                    :
+                                                    null
+                                                }
+                                            </div>
+                                            <Input
+                                                label={"nouvelle compétence"}
+                                                required={true}
+                                            >
+                                            </Input>
+                                            <Button
+                                                type={"submit"}
+                                                className={`text-white bg-green-500 mt-4`}
+                                                size={"sm"}>Ajouter
+                                            </Button>
+                                        </form>
+
+                                        :
+                                        <Select
+                                            value={user.competences}
+                                            onChange={(value) => {
+                                                setCompetences(value)
+                                            }}
+                                            required={true}
+                                            isMultiple={true}
+                                            options={lists.competences}
+                                            classNames={'overflow-y-scroll h-40'}
+                                        />
+                                    }
+                                    <Button onClick={() => {
+                                        setNotCompetence(!notCompetence)
                                     }}
-                                    required={true}
-                                    isMultiple={true}
-                                    options={lists.competences}
-                                    classNames={'overflow-y-scroll h-40'}
-                                />
+                                            className={`h-10 text-white ${notCompetence ? "bg-red-500 w-44 " : "bg-bleuFonce w-72 "}`}
+                                            size={"sm"}>
+                                        {notCompetence ? "Annuler" : "Ajouter une comptétence"}
+                                    </Button>
+                                </div>
                             </div>
                             <Button onClick={handleUpdate} variant={"filled"} className={"bg-bleuFonce text-white"}>Enregistrer
                                 le

@@ -1,22 +1,18 @@
-import React from "react";
 import SearchBar from '../Composants/SearchBar.jsx';
 import {HeadAfterBNav} from "../Composants/HeadAfterBNav.jsx"; // Importez le composant de barre de recherche
-import { Footer } from "../Composants/Footer"
-import { Formulaire } from "../Composants/Formulaire"
+import {Formulaire} from "../Composants/Formulaire"
+import {CarouselDefault} from "../Composants/Carousel.jsx";
 
 export const Accueil = () => {
-    // Fonction pour effectuer la recherche
-    const handleSearch = (query) => {
-        // Effectuer la recherche ici (dans votre cas, vous pouvez laisser vide car c'est la page d'accueil)
-        // Cette fonction est nécessaire pour que la prop handleSearch soit correctement transmise à SearchBar
-    }
+
 
     return (
         <div>
-            <HeadAfterBNav />
+            <HeadAfterBNav/>
             {/* Passer la fonction handleSearch en tant que prop à SearchBar */}
-            <SearchBar search={false} handleSearch={handleSearch} ></SearchBar>
-            <Formulaire />
+            <SearchBar search={false}></SearchBar>
+            <CarouselDefault/>
+            <Formulaire/>
         </div>
     );
 }

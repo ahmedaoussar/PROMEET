@@ -8,7 +8,6 @@ import {
 } from "@material-tailwind/react";
 import {Chip} from "@material-tailwind/react";
 import {Link} from "react-router-dom";
-import React from "react";
 
 export const CardProfile = ({profil}) => {
 
@@ -33,12 +32,10 @@ export const CardProfile = ({profil}) => {
                     {profil.prenom + " " + profil.nom}{/*on affiche les infos de chaque objet*/}
                 </Typography>
 
-                <Typography>
-                    {profil.domaine && profil.sous_domaine ? profil.domaine + " - " + profil.sous_domaine + " - " : ""}
-                    <div className="flex flex-wrap items-end gap-2">
-                        {profil?.competences ? displayCompetence() : <></>}
-                    </div>
-                </Typography>
+                {profil.domaine && profil.sous_domaine ? profil.domaine + " - " + profil.sous_domaine + " - " : ""}
+                <div className="flex flex-wrap items-end gap-2 my-2">
+                    {profil?.competences ? displayCompetence() : <></>}
+                </div>
 
                 <p className={"break-all"}>
                     {profil.description?.length > 100 ? profil.description.slice(0, 100) + '...' : profil.description}

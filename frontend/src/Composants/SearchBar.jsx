@@ -1,9 +1,7 @@
 import {useState, useEffect} from "react";
 import axios from "axios";
 import {Button, Input} from "@material-tailwind/react";
-import {Link, useLocation} from "react-router-dom";
-import React from "react";
-import updateCards from "./CardProfile";
+import {Link} from "react-router-dom";
 
 const SearchBar = ({search, profilesRetrieved}) => {
     const [filtres, setFiltres] = useState([]);
@@ -35,7 +33,6 @@ const SearchBar = ({search, profilesRetrieved}) => {
 
     return (
         <form onSubmit={handleSearch}//appel de la fonction handleSearch
-              profiles={query} //attribut initialisé par la réponse de l'api
               className="w-full mx-auto rounded-xl bg-nuanceBlanc border border-bleuFonce py-4 px-2">
             <label htmlFor="default-search"
                    className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
@@ -48,7 +45,8 @@ const SearchBar = ({search, profilesRetrieved}) => {
                     required
                     onChange={(event) => setQuery(event.target.value)} //quand on change la valeur du champs, on initialise query avec la valeur entrée dans le champ
                 />
-                {search ? <Button //If search est true on affiche un bouton, sinon un lien
+                {search ?
+                    <Button //If search est true on affiche un bouton, sinon un lien
                         type={"submit"}
                         size="sm"
                         className="!absolute right-1 top-1 rounded text-white bg-bleuFonce flex items-center gap-3"
