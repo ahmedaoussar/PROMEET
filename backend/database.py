@@ -109,6 +109,7 @@ def initialize_db_personne():
         telephone VARCHAR(255),
         description_profil VARCHAR(255),
         profession_id INT,
+        role VARCHAR(255) DEFAULT 'user',
         sous_domaine INT,
         entreprise INT,
         FOREIGN KEY (profession_id) REFERENCES profession(id),
