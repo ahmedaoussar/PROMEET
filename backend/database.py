@@ -617,7 +617,7 @@ def findUserById(userId: int):
         LEFT JOIN profession ON personne.profession_id = profession.id
         LEFT JOIN sous_domaine ON personne.sous_domaine = sous_domaine.id
         LEFT JOIN domaine ON sous_domaine.domaine_id = domaine.id
-        LEFT JOIN competence ON personne.sous_domaine = competence.personne_id
+        LEFT JOIN competence ON personne.id = competence.personne_id
         LEFT JOIN entreprise ON personne.entreprise = entreprise.id
         WHERE personne.id = {userId}
         GROUP BY personne.id""")
@@ -671,7 +671,6 @@ def updateUserById(userId: int, user: UpdateUser):
         cursor = conn.cursor(buffered=True)
 
         entreprise_id = findEntrepriseByUserId(user)
-        domaine_id = findDomaineByUserId(user)
         profession_id = findProfessionByUserId(user)
         sous_domaine_id = findSousDomaineByUserId(user)
         updateCompetences(user)
@@ -712,6 +711,7 @@ def findEntrepriseByUserId(user: UpdateUser):
 
         cursor.execute(f"""SELECT id FROM entreprise WHERE nom = %s""", (user.entreprise,))
         row = cursor.fetchone()
+        return row[0] if row else None
     else:
         entreprise_id = row[0] if row else None
         return entreprise_id

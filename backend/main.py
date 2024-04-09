@@ -130,7 +130,6 @@ async def login(form_data: auth):
 @app.get('/lists')
 async def get_allInfo():
     return {
-        'domaine': findAllDomaines(),
         'sous_domaine': findAllSousDomaines(),
         'competences': findAllCompetences(),
         'profession': findAllProfessions(),
