@@ -313,27 +313,34 @@ export function InfoProfil() {
                                     {user.description === "" ? "Aucune description renseignée" : user.description}
                                 </Typography>
                             </div>
-                            <div className="mb-16">
-                                <h3 className="text-bleuFonce font-medium mb-2">Domaine : </h3>
-                                <Chip value={user.domaine?.value ?? "aucun domaine saisi"}
-                                      className={'bg-bleuFonce w-fit'}/>
-                            </div>
-                            <div className="mb-16">
-                                <h3 className="text-bleuFonce font-medium mb-2">Sous Domaine
-                                    : </h3>
-                                <Chip value={user.sous_domaine?.value ?? "aucun sous domaine saisi"}
-                                      className={'bg-bleuFonce w-fit'}/>
-                            </div>
-                            <div className="mb-16">
-                                <h3 className="text-bleuFonce font-medium mb-2">Profession
-                                    : </h3>
-                                <Chip value={user.profession?.value ?? "aucune profession saisi"}
-                                      className={'bg-bleuFonce w-fit'}/>
-                            </div>
-                            <div className="mb-16">
-                                <h3 className="text-bleuFonce font-medium mb-2">Compétences : </h3>
-                                <div className="flex flex-wrap gap-2">
-                                    {renderCompetences()}
+                            <div className={"grid grid-cols-1 md:grid-cols-2 gap-5"}>
+                                <div className="">
+                                    <h3 className="text-bleuFonce font-medium mb-2">Domaine : </h3>
+                                    <Chip value={user.entreprise?.value ?? "aucun domaine saisi"}
+                                          className={'bg-bleuFonce w-fit'}/>
+                                </div>
+                                <div className="">
+                                    <h3 className="text-bleuFonce font-medium mb-2">Domaine : </h3>
+                                    <Chip value={user.domaine?.value ?? "aucun domaine saisi"}
+                                          className={'bg-bleuFonce w-fit'}/>
+                                </div>
+                                <div className="">
+                                    <h3 className="text-bleuFonce font-medium mb-2">Sous Domaine
+                                        : </h3>
+                                    <Chip value={user.sous_domaine?.value ?? "aucun sous domaine saisi"}
+                                          className={'bg-bleuFonce w-fit'}/>
+                                </div>
+                                <div className="">
+                                    <h3 className="text-bleuFonce font-medium mb-2">Profession
+                                        : </h3>
+                                    <Chip value={user.profession?.value ?? "aucune profession saisi"}
+                                          className={'bg-bleuFonce w-fit'}/>
+                                </div>
+                                <div className="">
+                                    <h3 className="text-bleuFonce font-medium mb-2">Compétences : </h3>
+                                    <div className="flex flex-wrap gap-2">
+                                        {renderCompetences()}
+                                    </div>
                                 </div>
                             </div>
                         </>
