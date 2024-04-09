@@ -316,7 +316,7 @@ export function InfoProfil() {
                             <div className={"grid grid-cols-1 md:grid-cols-2 gap-5"}>
                                 <div className="">
                                     <h3 className="text-bleuFonce font-medium mb-2">Entreprise : </h3>
-                                    <Chip value={user.entreprise?.value ?? "aucun domaine saisi"}
+                                    <Chip value={user.entreprise?.value ?? "aucun entreprise saisi"}
                                           className={'bg-bleuFonce w-fit'}/>
                                 </div>
                                 <div className="">
