@@ -1,7 +1,8 @@
-import { useState } from 'react';
 import { classNames } from '@emotion/react';
+import { useState } from 'react';
 
-const ArtisanList = () => {
+
+const BackOffice = () => {
   const [data, setData] = useState([
     { id: 1, name: 'Michel Durand', profession: 'Plombier' },
     { id: 2, name: 'Jean Dupont', profession: 'Électricien' },
@@ -68,4 +69,4 @@ const ArtisanList = () => {
   );
 };
 
-export default ArtisanList;
+export default BackOffice;
